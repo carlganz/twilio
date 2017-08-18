@@ -27,9 +27,14 @@
 #'     "https://www.r-project.org/logo/Rlogo.png")
 #'
 #' }
-tw_send_message <- function(to, from, body = NULL, media_url = NULL){
+tw_send_message <- function(to, from = NULL, body = NULL, media_url = NULL, msg_service_id = NULL){
   if(is.null(body) && is.null(media_url)){
     stop("Please specify body, media_url, or both.",
+         call. = FALSE)
+  }
+
+  if (is.null(from) && is.null(msg_service_id)){
+    stop("Plrease specify from, or msg_service_id",
          call. = FALSE)
   }
 
@@ -41,7 +46,8 @@ tw_send_message <- function(to, from, body = NULL, media_url = NULL){
                  list(To = to,
                       From = from,
                       Body = body,
-                      MediaUrl = media_url)
+                      MediaUrl = media_url,
+                      MessagingServiceSid = msg_service_id)
                )
   if(http_type(resp) != "application/json"){
     stop("Twilio API did not return JSON.", call. = FALSE)
