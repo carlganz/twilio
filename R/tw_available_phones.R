@@ -1,6 +1,6 @@
 #' Search Available Phones
 #'
-#' Search for phone numbers to purchase with \link{\code{tw_buy_phone}}.
+#' Search for phone numbers to purchase.
 #'
 #' @export
 tw_available_phones <- function(area_code = NULL, contains = NULL, sms_enabled = NULL,
