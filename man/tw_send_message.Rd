@@ -5,7 +5,7 @@
 \title{Send an SMS or MMS Message}
 \usage{
 tw_send_message(to, from = NULL, body = NULL, media_url = NULL,
-  msg_service_id = NULL, sid = NULL, token = NULL)
+  msg_service_id = NULL)
 }
 \arguments{
 \item{to}{A phone number which will receieve the message.}

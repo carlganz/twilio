@@ -27,7 +27,7 @@
 #'     "https://www.r-project.org/logo/Rlogo.png")
 #'
 #' }
-tw_send_message <- function(to, from = NULL, body = NULL, media_url = NULL, msg_service_id = NULL, sid = NULL, token = NULL){
+tw_send_message <- function(to, from = NULL, body = NULL, media_url = NULL, msg_service_id = NULL){
   if(is.null(body) && is.null(media_url)){
     stop("Please specify body, media_url, or both.",
          call. = FALSE)
@@ -42,7 +42,7 @@ tw_send_message <- function(to, from = NULL, body = NULL, media_url = NULL, msg_
   ua <- user_agent("https://github.com/seankross/twilio")
   path <- paste("2010-04-01", "Accounts", get_sid(), "Messages.json", sep = "/")
   url <- modify_url(base_url, path = path)
-  resp <- POST(url, ua, authenticate(if (is.null(sid)) get_sid() else sid, if (is.null(token)) get_token() else token), body =
+  resp <- POST(url, ua, authenticate(get_sid(), get_token()), body =
                  list(To = to,
                       From = from,
                       Body = body,
