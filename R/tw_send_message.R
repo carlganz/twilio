@@ -47,7 +47,8 @@ tw_send_message <- function(to, from = NULL, body = NULL, media_url = NULL, msg_
                       From = from,
                       Body = body,
                       MediaUrl = media_url,
-                      MessagingServiceSid = msg_service_id)
+                      MessagingServiceSid = msg_service_id),
+               httr::content_type_json()
                )
   if(http_type(resp) != "application/json"){
     stop("Twilio API did not return JSON.", call. = FALSE)
