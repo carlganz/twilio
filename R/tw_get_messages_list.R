@@ -44,6 +44,7 @@ tw_get_messages_list <- function(page = 0, page_size = 50){
 }
 
 #' @importFrom dplyr bind_rows
+#' @importFrom purrr map_chr
 #' @export
 tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL) {
   base_url <- "https://api.twilio.com/"
