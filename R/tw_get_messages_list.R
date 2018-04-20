@@ -62,10 +62,10 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL) {
   check_status(resp)
 
   data.frame(
-    txt = parsed$messages %>% map_chr("body"),
-    to = parsed$messages %>% map_chr("to"),
-    from = parsed$messages %>% map_chr("from"),
-    sent = parsed$messages %>% map_chr("date_sent")
+    txt = parsed$messages %>% map_chr("body", .default = NA_character_),
+    to = parsed$messages %>% map_chr("to", .default = NA_character_),
+    from = parsed$messages %>% map_chr("from", .default = NA_character_),
+    sent = parsed$messages %>% map_chr("date_sent", .default = NA_character_)
   )
 }
 
