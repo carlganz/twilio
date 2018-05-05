@@ -61,11 +61,21 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL) {
 
   check_status(resp)
 
-  data.frame(
+  tibble(
+    sid = parsed$messages %>% map_chr("sid", .default = NA_character_),
     txt = parsed$messages %>% map_chr("body", .default = NA_character_),
     to = parsed$messages %>% map_chr("to", .default = NA_character_),
     from = parsed$messages %>% map_chr("from", .default = NA_character_),
-    sent = parsed$messages %>% map_chr("date_sent", .default = NA_character_)
-  )
+    sent = parsed$messages %>% map_chr("date_sent", .default = NA_character_),
+    num_media = parsed$messages %>% map_chr("num_media", .default = NA_character_)
+  ) %>%
+    left_join(
+      print(.) %>% filter(num_media > 0) %>% pull("sid") %>% {
+       tibble(
+        sid = .,
+        media_url = map(., tw_get_message_media) %>% map(c(1,4))
+       )
+      }, by = "sid"
+    )
 }
 
