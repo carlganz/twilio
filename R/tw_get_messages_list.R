@@ -45,6 +45,7 @@ tw_get_messages_list <- function(page = 0, page_size = 50){
 
 #' @importFrom dplyr bind_rows
 #' @importFrom purrr map_chr
+#' @importFrom tibble tibble
 #' @export
 tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL) {
   base_url <- "https://api.twilio.com/"
@@ -61,7 +62,7 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL) {
 
   check_status(resp)
 
-  tibble(
+  tibble::tibble(
     sid = parsed$messages %>% map_chr("sid", .default = NA_character_),
     txt = parsed$messages %>% map_chr("body", .default = NA_character_),
     to = parsed$messages %>% map_chr("to", .default = NA_character_),
@@ -71,7 +72,7 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL) {
   ) %>%
     left_join(
       print(.) %>% filter(num_media > 0) %>% pull("sid") %>% {
-       tibble(
+       tibble::tibble(
         sid = .,
         media_url = map(., tw_get_message_media) %>% map(c(1,4))
        )
