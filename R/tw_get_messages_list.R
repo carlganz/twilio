@@ -69,8 +69,9 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, d
     from = parsed$messages %>% map_chr("from", .default = NA_character_),
     sent = parsed$messages %>% map_chr("date_sent", .default = NA_character_),
     num_media = parsed$messages %>% map_chr("num_media", .default = NA_character_)
-  ) %>%
-    dplyr::left_join(
+  ) %>% {
+    if (any(.$num_media > 0)) {
+    dplyr::left_join(.,
       print(.) %>% filter(num_media > 0) %>% pull("sid") %>% {
        tibble::tibble(
         sid = .,
@@ -78,5 +79,7 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, d
        )
       }, by = "sid"
     )
+    } else .
+  }
 }
 
