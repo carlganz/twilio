@@ -43,7 +43,7 @@ tw_get_messages_list <- function(page = 0, page_size = 50){
   )
 }
 
-#' @importFrom dplyr bind_rows left_join
+#' @importFrom dplyr bind_rows left_join filter
 #' @importFrom purrr map_chr
 #' @importFrom tibble tibble
 #' @export
@@ -72,7 +72,7 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, d
   ) %>% {
     if (any(.$num_media > 0)) {
     dplyr::left_join(.,
-      print(.) %>% filter(num_media > 0) %>% pull("sid") %>% {
+      . %>% dplyr::filter(num_media > 0) %>% pull("sid") %>% {
        tibble::tibble(
         sid = .,
         media_url = map(., tw_get_message_media) %>% map(c(1,4))
