@@ -80,7 +80,7 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, d
       }, by = "sid"
     )
     } else {
-      .$media_url <- NA_character_[seq_len(nrow(.))]
+      .$media_url <- list(NA_character_[seq_len(nrow(.))])
       .
     }
   }
