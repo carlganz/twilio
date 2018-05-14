@@ -79,7 +79,7 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, d
        )
       }, by = "sid"
     )
-    } else .
+    } else . %>% mutate_(media_url = ~NA_character_)
   }
 }
 
