@@ -14,7 +14,8 @@ Imports:
     httr,
     jsonlite,
     magrittr,
-    lubridate
+    lubridate,
+    dplyr, tibble
 License: MIT + file LICENSE
 URL: http://github.com/seankross/twilio
 Encoding: UTF-8

@@ -43,8 +43,8 @@ tw_get_messages_list <- function(page = 0, page_size = 50){
   )
 }
 
-#' @importFrom dplyr bind_rows left_join filter
-#' @importFrom purrr map_chr
+#' @importFrom dplyr bind_rows left_join filter pull
+#' @importFrom purrr map_chr map
 #' @importFrom tibble tibble
 #' @export
 tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, date_sent = NULL) {
