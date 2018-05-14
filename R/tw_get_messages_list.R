@@ -47,11 +47,11 @@ tw_get_messages_list <- function(page = 0, page_size = 50){
 #' @importFrom purrr map_chr
 #' @importFrom tibble tibble
 #' @export
-tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL) {
+tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, date_sent = NULL) {
   base_url <- "https://api.twilio.com/"
   ua <- user_agent("https://github.com/seankross/twilio")
   path <- paste("2010-04-01", "Accounts", get_sid(), "Messages.json", sep = "/")
-  url <- modify_url(base_url, path = path, query = list(page = page, pagesize = page_size, To = to, From = from))
+  url <- modify_url(base_url, path = path, query = list(page = page, pagesize = page_size, To = to, From = from, DateSent = date_sent))
   resp <- GET(url, ua, authenticate(get_sid(), get_token()))
 
   if(http_type(resp) != "application/json"){
