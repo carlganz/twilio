@@ -43,7 +43,7 @@ tw_get_messages_list <- function(page = 0, page_size = 50){
   )
 }
 
-#' @importFrom dplyr bind_rows left_join filter pull
+#' @importFrom dplyr bind_rows left_join filter pull mutate
 #' @importFrom purrr map_chr map
 #' @importFrom tibble tibble
 #' @export
@@ -80,8 +80,9 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, d
       }, by = "sid"
     )
     } else {
-      .$media_url <- list(NA_character_[seq_len(nrow(.))])
-      .
+      . %>% mutate(
+        media_url = map(sid, function(x) NA_character_)
+      )
     }
   }
 }
