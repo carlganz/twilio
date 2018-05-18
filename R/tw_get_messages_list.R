@@ -72,7 +72,7 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, d
   ) %>% {
     if (any(.$num_media > 0)) {
     dplyr::left_join(.,
-      print(.) %>% dplyr::filter(num_media > 0) %>% pull("sid") %>% {
+      (.) %>% dplyr::filter(num_media > 0) %>% pull("sid") %>% {
        tibble::tibble(
         sid = .,
         media_url = map(., tw_get_message_media) %>% map(c(1,4))
@@ -80,7 +80,7 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, d
       }, by = "sid"
     )
     } else {
-      . %>% mutate(
+      mutate(.,
         media_url = map(sid, function(x) NA_character_)
       )
     }
