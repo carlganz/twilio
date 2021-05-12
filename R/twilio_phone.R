@@ -11,7 +11,7 @@ twilio_phone <- function(parsed_phone) {
 }
 
 #' @export
-print.twilio_phone <- function(x, ...){
+print.twilio_phone <- function(x, ...) {
   cat(
     "Phone Number: ", x$phone_number, "\n",
     sep = ""
@@ -31,7 +31,7 @@ twilio_available_phone <- function(parsed_phone) {
 }
 
 #' @export
-print.twilio_available_phone <- function(x, ...){
+print.twilio_available_phone <- function(x, ...) {
   cat(
     "Phone Number: ", x$phone_number, "\n",
     "Locality: ", x$locality, ", ", x$region, "\n",

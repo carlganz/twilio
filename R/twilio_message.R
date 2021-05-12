@@ -1,4 +1,4 @@
-twilio_message <- function(parsed_message){
+twilio_message <- function(parsed_message) {
   parsed_message$account_sid <- NULL
   parsed_message$messaging_service_sid <- NULL
   parsed_message$uri <- NULL
@@ -11,10 +11,12 @@ twilio_message <- function(parsed_message){
 }
 
 #' @export
-print.twilio_message <- function(x, ...){
+print.twilio_message <- function(x, ...) {
   cat("From: ", x$from, "\n",
-      "To: ", x$to, "\n",
-      "Body: ", x$body, "\n",
-      "Status: ", x$status, sep = "")
+    "To: ", x$to, "\n",
+    "Body: ", x$body, "\n",
+    "Status: ", x$status,
+    sep = ""
+  )
   invisible(x)
 }

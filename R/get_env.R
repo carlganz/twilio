@@ -1,18 +1,20 @@
-get_sid <- function(){
+get_sid <- function() {
   sid <- Sys.getenv("TWILIO_SID")
-  if(identical(sid, "")){
+  if (identical(sid, "")) {
     stop("Please set environmental variable TWILIO_SID.",
-         call. = FALSE)
+      call. = FALSE
+    )
   }
 
   sid
 }
 
-get_token <- function(){
+get_token <- function() {
   token <- Sys.getenv("TWILIO_TOKEN")
-  if(identical(token, "")){
+  if (identical(token, "")) {
     stop("Please set environmental variable TWILIO_TOKEN.",
-         call. = FALSE)
+      call. = FALSE
+    )
   }
 
   token

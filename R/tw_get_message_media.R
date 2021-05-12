@@ -22,16 +22,15 @@
 #'
 #' # Get media information from a message
 #' tw_get_message_media("MMo8Jw86Lj6422NzWgb8QxXlD5c45U100v")
-#'
 #' }
-tw_get_message_media <- function(message_sid){
+tw_get_message_media <- function(message_sid) {
   base_url <- "https://api.twilio.com/"
   ua <- user_agent("https://github.com/seankross/twilio")
   path <- paste("2010-04-01", "Accounts", get_sid(), "Messages", message_sid, "Media.json", sep = "/")
   url <- modify_url(base_url, path = path)
   resp <- GET(url, ua, authenticate(get_sid(), get_token()))
 
-  if(http_type(resp) != "application/json"){
+  if (http_type(resp) != "application/json") {
     stop("Twilio API did not return JSON.", call. = FALSE)
   }
 
@@ -39,18 +38,22 @@ tw_get_message_media <- function(message_sid){
 
   check_status(resp)
 
-  media <- map(parsed$media_list, function(x){
-                                    structure(
-                                      list(sid = x$sid,
-                                           message_sid = x$parent_sid,
-                                           content_type = x$content_type),
-                                      class = "twilio_media"
-                                    )
-                                  })
+  media <- map(parsed$media_list, function(x) {
+    structure(
+      list(
+        sid = x$sid,
+        message_sid = x$parent_sid,
+        content_type = x$content_type
+      ),
+      class = "twilio_media"
+    )
+  })
 
-  for(i in seq_along(media)){
+  for (i in seq_along(media)) {
     media_path <- paste("2010-04-01", "Accounts", get_sid(), "Messages",
-                        message_sid, "Media", media[[i]]$sid,  sep = "/")
+      message_sid, "Media", media[[i]]$sid,
+      sep = "/"
+    )
     media_url <- modify_url(base_url, path = media_path)
     media_resp <- GET(media_url, authenticate(get_sid(), get_token()))
     media[[i]]$url <- media_resp$url
@@ -60,8 +63,10 @@ tw_get_message_media <- function(message_sid){
 }
 
 #' @export
-print.twilio_media <- function(x, ...){
+print.twilio_media <- function(x, ...) {
   cat("URL: ", x$url, "\n",
-      "Type: ", x$content_type, "\n", sep = "")
+    "Type: ", x$content_type, "\n",
+    sep = ""
+  )
   invisible(x)
 }

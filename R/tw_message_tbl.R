@@ -23,9 +23,8 @@
 #'
 #' # Create data frame from log
 #' sms_data <- tw_message_tbl(messages)
-#'
 #' }
-tw_message_tbl <- function(messages_list){
+tw_message_tbl <- function(messages_list) {
   stopifnot(identical(class(messages_list), "twilio_messages_list"))
 
   raw_log <- as.data.frame(do.call(rbind, messages_list), stringsAsFactors = FALSE)
@@ -35,7 +34,13 @@ tw_message_tbl <- function(messages_list){
   raw_log$date_updated <- do.call(c, raw_log$date_updated)
   raw_log$date_sent %<>% map(parse_date_time, orders = "%a %d %b %Y %H:%M:%S %z")
   raw_log$date_sent <- do.call(c, raw_log$date_sent)
-  raw_log$error_code %<>% map(function(x){ifelse(is.null(x), NA, x)}) %>% unlist()
-  raw_log$error_message %<>% map(function(x){ifelse(is.null(x), NA, x)}) %>% unlist()
-  raw_log %>% map_if(is.list, unlist) %>% as.data.frame(stringsAsFactors = FALSE)
+  raw_log$error_code %<>% map(function(x) {
+    ifelse(is.null(x), NA, x)
+  }) %>% unlist()
+  raw_log$error_message %<>% map(function(x) {
+    ifelse(is.null(x), NA, x)
+  }) %>% unlist()
+  raw_log %>%
+    map_if(is.list, unlist) %>%
+    as.data.frame(stringsAsFactors = FALSE)
 }

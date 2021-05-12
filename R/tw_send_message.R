@@ -23,33 +23,39 @@
 #' tw_send_message("2125557634", "9178675903", media_url = "https://www.r-project.org/logo/Rlogo.png")
 #'
 #' # Send a picture message with text
-#' tw_send_message("2125557634", "9178675903", "Do you like the new logo?",
-#'     "https://www.r-project.org/logo/Rlogo.png")
-#'
+#' tw_send_message(
+#'   "2125557634", "9178675903", "Do you like the new logo?",
+#'   "https://www.r-project.org/logo/Rlogo.png"
+#' )
 #' }
-tw_send_message <- function(to, from = NULL, body = NULL, media_url = NULL, msg_service_id = NULL){
-  if(is.null(body) && is.null(media_url)){
+tw_send_message <- function(to, from = NULL, body = NULL, media_url = NULL, msg_service_id = NULL) {
+  if (is.null(body) && is.null(media_url)) {
     stop("Please specify body, media_url, or both.",
-         call. = FALSE)
+      call. = FALSE
+    )
   }
 
-  if (is.null(from) && is.null(msg_service_id)){
+  if (is.null(from) && is.null(msg_service_id)) {
     stop("Plrease specify from, or msg_service_id",
-         call. = FALSE)
+      call. = FALSE
+    )
   }
 
   base_url <- "https://api.twilio.com/"
   ua <- user_agent("https://github.com/seankross/twilio")
   path <- paste("2010-04-01", "Accounts", get_sid(), "Messages.json", sep = "/")
   url <- modify_url(base_url, path = path)
-  resp <- POST(url, ua, authenticate(get_sid(), get_token()), body =
-                 list(To = to,
-                      From = from,
-                      Body = body,
-                      MediaUrl = media_url,
-                      MessagingServiceSid = msg_service_id)
-               )
-  if(http_type(resp) != "application/json"){
+  resp <- POST(url, ua, authenticate(get_sid(), get_token()),
+    body =
+      list(
+        To = to,
+        From = from,
+        Body = body,
+        MediaUrl = media_url,
+        MessagingServiceSid = msg_service_id
+      )
+  )
+  if (http_type(resp) != "application/json") {
     stop("Twilio API did not return JSON.", call. = FALSE)
   }
 

@@ -20,16 +20,15 @@
 #'
 #' # Get messages sent to your account
 #' messages <- tw_get_messages_list()
-#'
 #' }
-tw_get_messages_list <- function(page = 0, page_size = 50){
+tw_get_messages_list <- function(page = 0, page_size = 50) {
   base_url <- "https://api.twilio.com/"
   ua <- user_agent("https://github.com/seankross/twilio")
   path <- paste("2010-04-01", "Accounts", get_sid(), "Messages.json", sep = "/")
   url <- modify_url(base_url, path = path, query = list(page = page, pagesize = page_size))
   resp <- GET(url, ua, authenticate(get_sid(), get_token()))
 
-  if(http_type(resp) != "application/json"){
+  if (http_type(resp) != "application/json") {
     stop("Twilio API did not return JSON.", call. = FALSE)
   }
 
@@ -54,7 +53,7 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, d
   url <- modify_url(base_url, path = path, query = list(page = page, pagesize = page_size, To = to, From = from, `DateSent>` = date_sent))
   resp <- GET(url, ua, authenticate(get_sid(), get_token()))
 
-  if(http_type(resp) != "application/json"){
+  if (http_type(resp) != "application/json") {
     stop("Twilio API did not return JSON.", call. = FALSE)
   }
 
@@ -71,14 +70,15 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, d
     num_media = parsed$messages %>% map_chr("num_media", .default = NA_character_)
   ) %>% {
     if (any(.$num_media > 0)) {
-    dplyr::left_join(.,
-      (.) %>% dplyr::filter(num_media > 0) %>% pull("sid") %>% {
-       tibble::tibble(
-        sid = .,
-        media_url = map(., tw_get_message_media) %>% map(c(1,4))
-       )
-      }, by = "sid"
-    )
+      dplyr::left_join(.,
+        (.) %>% dplyr::filter(num_media > 0) %>% pull("sid") %>% {
+          tibble::tibble(
+            sid = .,
+            media_url = map(., tw_get_message_media) %>% map(c(1, 4))
+          )
+        },
+        by = "sid"
+      )
     } else {
       mutate(.,
         media_url = map(sid, function(x) NA_character_)
@@ -86,4 +86,3 @@ tw_tidy_messages <- function(page = 0, page_size = 50, to = NULL, from = NULL, d
     }
   }
 }
-

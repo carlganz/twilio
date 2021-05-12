@@ -3,12 +3,13 @@ tw_create_msg_service <- function(friendly_name, status_callback) {
   url <- "https://messaging.twilio.com/v1/Services"
   ua <- user_agent("https://github.com/seankross/twilio")
   resp <- POST(url, ua, authenticate(get_sid(), get_token()),
-               body = list(
-                 FriendlyName = friendly_name,
-                 StatusCallback = status_callback
-               ))
+    body = list(
+      FriendlyName = friendly_name,
+      StatusCallback = status_callback
+    )
+  )
 
-  if(http_type(resp) != "application/json"){
+  if (http_type(resp) != "application/json") {
     stop("Twilio API did not return JSON.", call. = FALSE)
   }
 
@@ -20,17 +21,18 @@ tw_create_msg_service <- function(friendly_name, status_callback) {
 }
 
 #' @export
-tw_add_phone_msg_service <- function(msg_service_sid, phone_sid){
+tw_add_phone_msg_service <- function(msg_service_sid, phone_sid) {
   base_url <- "https://messaging.twilio.com/"
   ua <- user_agent("https://github.com/seankross/twilio")
   path <- paste("v1", "Services", msg_service_sid, "PhoneNumbers", sep = "/")
   url <- modify_url(base_url, path = path)
   resp <- POST(url, ua, authenticate(get_sid(), get_token()),
-               body = list(
-                 PhoneNumberSid = phone_sid
-               ))
+    body = list(
+      PhoneNumberSid = phone_sid
+    )
+  )
 
-  if(http_type(resp) != "application/json"){
+  if (http_type(resp) != "application/json") {
     stop("Twilio API did not return JSON.", call. = FALSE)
   }
 
@@ -49,7 +51,7 @@ tw_msg_service_phones_list <- function(msg_service_sid) {
   url <- modify_url(base_url, path = path)
   resp <- GET(url, ua, authenticate(get_sid(), get_token()))
 
-  if(http_type(resp) != "application/json"){
+  if (http_type(resp) != "application/json") {
     stop("Twilio API did not return JSON.", call. = FALSE)
   }
 
@@ -64,14 +66,14 @@ tw_msg_service_phones_list <- function(msg_service_sid) {
 
 #' @importFrom httr DELETE
 #' @export
-tw_remove_phone_msg_service <- function(msg_service_sid, phone_sid){
+tw_remove_phone_msg_service <- function(msg_service_sid, phone_sid) {
   base_url <- "https://messaging.twilio.com/"
   ua <- user_agent("https://github.com/seankross/twilio")
   path <- paste("v1", "Services", msg_service_sid, "PhoneNumbers", phone_sid, sep = "/")
   url <- modify_url(base_url, path = path)
   resp <- DELETE(url, ua, authenticate(get_sid(), get_token()))
 
-  if(http_type(resp) != "application/json"){
+  if (http_type(resp) != "application/json") {
     stop("Twilio API did not return JSON.", call. = FALSE)
   }
 
@@ -89,7 +91,7 @@ tw_msg_service_list <- function() {
 
   resp <- GET(url, ua, authenticate(get_sid(), get_token()))
 
-  if(http_type(resp) != "application/json"){
+  if (http_type(resp) != "application/json") {
     stop("Twilio API did not return JSON.", call. = FALSE)
   }
 

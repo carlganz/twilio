@@ -10,9 +10,10 @@ tw_buy_phone_number <- function(phone_number) {
   path <- paste("2010-04-01", "Accounts", get_sid(), "IncomingPhoneNumbers.json", sep = "/")
   url <- modify_url(base_url, path = path)
   resp <- POST(url,
-               ua,
-               authenticate(get_sid(), get_token()),
-               body = list(PhoneNumber = phone_number))
+    ua,
+    authenticate(get_sid(), get_token()),
+    body = list(PhoneNumber = phone_number)
+  )
 
   if (http_type(resp) != "application/json") {
     stop("Twilio API did not return JSON.", call. = FALSE)
