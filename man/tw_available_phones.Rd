@@ -4,11 +4,18 @@
 \alias{tw_available_phones}
 \title{Search Available Phones}
 \usage{
-tw_available_phones(area_code = NULL, contains = NULL, sms_enabled = NULL,
-  mms_enabled = NULL, voice_enabled = NULL, fax_enabled = NULL,
+tw_available_phones(
+  area_code = NULL,
+  contains = NULL,
+  sms_enabled = NULL,
+  mms_enabled = NULL,
+  voice_enabled = NULL,
+  fax_enabled = NULL,
   exclude_all_address_required = NULL,
   exclude_local_address_required = NULL,
-  exclude_foreign_address_required = NULL, beta = NULL)
+  exclude_foreign_address_required = NULL,
+  beta = NULL
+)
 }
 \description{
 Search for phone numbers to purchase.

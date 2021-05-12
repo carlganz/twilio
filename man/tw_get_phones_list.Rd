@@ -4,8 +4,12 @@
 \alias{tw_get_phones_list}
 \title{Get a list of all phone numbers associated with Twilio account}
 \usage{
-tw_get_phones_list(phone_number = NULL, friendly_name = NULL, beta = NULL,
-  origin = NULL)
+tw_get_phones_list(
+  phone_number = NULL,
+  friendly_name = NULL,
+  beta = NULL,
+  origin = NULL
+)
 }
 \description{
 Get a list of all phone numbers associated with Twilio account
