@@ -29,6 +29,5 @@ Sys.setenv(TWILIO_TOKEN = "483H9lE05V0Jr362eq1814Li2N1I424t")
 
 # Get media information from a message
 tw_get_message_media("MMo8Jw86Lj6422NzWgb8QxXlD5c45U100v")
-
 }
 }

@@ -29,6 +29,5 @@ messages <- tw_get_messages_list()
 
 # Create data frame from log
 sms_data <- tw_message_tbl(messages)
-
 }
 }

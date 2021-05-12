@@ -15,7 +15,7 @@ tw_get_messages_list(page = 0, page_size = 50)
 A \code{twilio_messages_list} object.
 }
 \description{
-Retrieves a list of Twilio SMS and MMS messages sent and receieved from your
+Retrieves a list of Twilio SMS and MMS messages sent and received from your
 account.
 }
 \examples{
@@ -28,6 +28,5 @@ Sys.setenv(TWILIO_TOKEN = "483H9lE05V0Jr362eq1814Li2N1I424t")
 
 # Get messages sent to your account
 messages <- tw_get_messages_list()
-
 }
 }

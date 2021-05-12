@@ -1,6 +1,6 @@
 #' Get List of Messages Sent and Received from Your Account
 #'
-#' Retrieves a list of Twilio SMS and MMS messages sent and receieved from your
+#' Retrieves a list of Twilio SMS and MMS messages sent and received from your
 #' account.
 #'
 #' @param page The page number of the list you would like to retrieve. Starts at zero.

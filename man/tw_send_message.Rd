@@ -42,8 +42,9 @@ tw_send_message("2125557634", "9178675903", "Hello from R!")
 tw_send_message("2125557634", "9178675903", media_url = "https://www.r-project.org/logo/Rlogo.png")
 
 # Send a picture message with text
-tw_send_message("2125557634", "9178675903", "Do you like the new logo?",
-    "https://www.r-project.org/logo/Rlogo.png")
-
+tw_send_message(
+  "2125557634", "9178675903", "Do you like the new logo?",
+  "https://www.r-project.org/logo/Rlogo.png"
+)
 }
 }
