@@ -3,7 +3,8 @@
 #' Retrieves a list of Twilio calls sent and received from your
 #' account.
 #'
-#' @param page The page number of the list you would like to retrieve. Starts at zero.
+#' @param page The page number of the list you would like to retrieve. Starts at zero. If `NULL`,
+#'   it will return all available data.
 #' @param page_size The number of calls per page. The maximum number allowed is 1000.
 #' @param status The status of the calls to include. Can be: "queued", "ringing", "in-progress",
 #'   "canceled", "completed", "failed", "busy", or "no-answer".
@@ -12,9 +13,9 @@
 #'   specify an inequality, such as `<=YYYY-MM-DD`, to read calls that started on or before
 #'   midnight of this date, and `>=YYYY-MM-DD` to read calls that started on or after
 #'   midnight of this date.
-#' @param end_time Only include calls that ended on this date. Specify a date as YYYY-MM-DD in GMT,
-#'   for example: `2009-07-06`, to read only calls that ended on this date. You can also specify an
-#'   inequality, such as `<=YYYY-MM-DD`, to read calls that ended on or before midnight of
+#' @param end_time Only include calls that ended on this date. Specify a date as =YYYY-MM-DD in GMT,
+#'   for example: `=2009-07-06`, to read only calls that ended on this date. You can also specify
+#'   an inequality, such as `<=YYYY-MM-DD`, to read calls that ended on or before midnight of
 #'   this date, and `>=YYYY-MM-DD` to read calls that ended on or after midnight of this date.
 #'
 #' @return A \code{twilio_calls_list} object.
@@ -39,6 +40,12 @@
 tw_get_calls_list <- function(
                               page = 0, page_size = 50, status = "", start_time = "",
                               end_time = "") {
+  # https://www.twilio.com/docs/voice/api/call-resource#read-multiple-call-resources
+  get_all <- is.null(page)
+  if (get_all) {
+    page <- 0
+    page_size <- 1000
+  }
   base_url <- "https://api.twilio.com/"
   ua <- user_agent("https://github.com/seankross/twilio")
   path <- paste("2010-04-01", "Accounts", get_sid(), "Calls.json", sep = "/")
@@ -46,18 +53,29 @@ tw_get_calls_list <- function(
   url <- paste0(
     url,
     ifelse(nchar(status) > 0, paste0("&Status=", status), ""),
-    ifelse(nchar(start_time) > 0, paste0("&StartTime=", start_time), ""),
-    ifelse(nchar(end_time) > 0, paste0("&EndTime=", end_time), "")
+    ifelse(nchar(start_time) > 0, paste0("&StartTime", start_time), ""),
+    ifelse(nchar(end_time) > 0, paste0("&EndTime", end_time), "")
   )
-  resp <- GET(url, ua, authenticate(get_sid(), get_token()))
 
+  resp <- GET(url, ua, authenticate(get_sid(), get_token()))
   if (http_type(resp) != "application/json") {
     stop("Twilio API did not return JSON.", call. = FALSE)
   }
-
-  parsed <- fromJSON(content(resp, "text", encoding = "UTF-8"), simplifyVector = FALSE)
-
+  act_parsed <- parsed <- fromJSON(content(resp, "text", encoding = "UTF-8"), simplifyVector = FALSE)
   check_status(resp)
+
+  while (get_all && !is.null(act_parsed$next_page_uri)) {
+    resp <- GET(
+      modify_url(base_url, path = act_parsed$next_page_uri), ua,
+      authenticate(get_sid(), get_token())
+    )
+    if (http_type(resp) != "application/json") {
+      stop("Twilio API did not return JSON.", call. = FALSE)
+    }
+    act_parsed <- fromJSON(content(resp, "text", encoding = "UTF-8"), simplifyVector = FALSE)
+    check_status(resp)
+    parsed$calls <- append(parsed$calls, act_parsed$calls)
+  }
 
   structure(
     map(parsed$calls, twilio_message),

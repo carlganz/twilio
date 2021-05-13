@@ -13,7 +13,8 @@ tw_get_calls_list(
 )
 }
 \arguments{
-\item{page}{The page number of the list you would like to retrieve. Starts at zero.}
+\item{page}{The page number of the list you would like to retrieve. Starts at zero. If `NULL`,
+it will return all available data.}
 
 \item{page_size}{The number of calls per page. The maximum number allowed is 1000.}
 
@@ -26,9 +27,9 @@ specify an inequality, such as `<=YYYY-MM-DD`, to read calls that started on or 
 midnight of this date, and `>=YYYY-MM-DD` to read calls that started on or after
 midnight of this date.}
 
-\item{end_time}{Only include calls that ended on this date. Specify a date as YYYY-MM-DD in GMT,
-for example: `2009-07-06`, to read only calls that ended on this date. You can also specify an
-inequality, such as `<=YYYY-MM-DD`, to read calls that ended on or before midnight of
+\item{end_time}{Only include calls that ended on this date. Specify a date as =YYYY-MM-DD in GMT,
+for example: `=2009-07-06`, to read only calls that ended on this date. You can also specify
+an inequality, such as `<=YYYY-MM-DD`, to read calls that ended on or before midnight of
 this date, and `>=YYYY-MM-DD` to read calls that ended on or after midnight of this date.}
 }
 \value{
